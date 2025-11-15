@@ -27,6 +27,6 @@ TGID = "6919196077"
 pattern = "baobao.snk567.cc/*"
 zone_name = "snk567.cc"
 
-# 每天上午8点（UTC时间0点 = 香港时间8点）定时通知
+# 每3天检查一次节点健康度（UTC时间0点 = 香港时间8点）
 [triggers]
-crons = ["0 0 * * *"]
+crons = ["0 0 */3 * *"]
