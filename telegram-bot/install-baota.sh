@@ -155,9 +155,39 @@ if ! command -v git &> /dev/null; then
     fi
 fi
 
+# 多个镜像源，自动切换
+MIRRORS=(
+    "https://github.com/San-quan/bpsub-hybrid.git"
+    "https://hub.njuu.cf/San-quan/bpsub-hybrid.git"
+    "https://mirror.ghproxy.com/https://github.com/San-quan/bpsub-hybrid.git"
+    "https://gh.api.99988866.xyz/https://github.com/San-quan/bpsub-hybrid.git"
+)
+
 echo "正在从 GitHub 下载项目..."
-# 使用 GitHub 代理加速
-git clone https://ghproxy.com/https://github.com/San-quan/bpsub-hybrid.git temp
+SUCCESS=false
+
+for MIRROR in "${MIRRORS[@]}"; do
+    echo "尝试镜像: $MIRROR"
+    if timeout 60 git clone --depth 1 "$MIRROR" temp 2>/dev/null; then
+        SUCCESS=true
+        echo -e "${GREEN}✓${NC} 下载成功"
+        break
+    else
+        echo -e "${YELLOW}⚠${NC} 该镜像失败，尝试下一个..."
+        rm -rf temp
+    fi
+done
+
+if [ "$SUCCESS" = false ]; then
+    echo -e "${RED}✗ 所有镜像都失败了${NC}"
+    echo ""
+    echo "手动下载方式："
+    echo "1. 访问: https://github.com/San-quan/bpsub-hybrid/archive/refs/heads/main.zip"
+    echo "2. 下载后解压到当前目录"
+    echo "3. 重新运行此脚本"
+    exit 1
+fi
+
 cp -r temp/telegram-bot/* .
 rm -rf temp
 
