@@ -28,7 +28,7 @@ jobs:
     name: Wrangler dry-run (debug)
     runs-on: ubuntu-latest
     needs: build
-    if: '${{ secrets.CF_API_TOKEN != '' }}'
+    if: ''${{ secrets.CF_API_TOKEN != '' }}''
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,7 +40,6 @@ jobs:
 
       - name: Install wrangler
         run: npm install -g wrangler@4
-
       - name: Check non-sensitive env presence
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
@@ -48,7 +47,7 @@ jobs:
           BACKEND_AUTH: ${{ secrets.BACKEND_AUTH }}
         run: |
           if [ -n "$CF_API_TOKEN" ]; then echo "CF_API_TOKEN: SET"; else echo "CF_API_TOKEN: MISSING"; fi
-          if [ -n "$BACKEND_ORIGIN" ]; then echo "BACKEND_ORIGIN: SET"; else echo "BACKEND_ORIGIN: MISSING"; fi
+          if [ -n "$BACKEND_ORIGIN" ]; then echo "BACKEND_ORIGIN: SET"; else echo "BACKEND_ORIGIN: MISSING"; fi      
           if [ -n "$BACKEND_AUTH" ]; then echo "BACKEND_AUTH: SET"; else echo "BACKEND_AUTH: MISSING"; fi
 
       - name: Wrangler version and whoami
@@ -65,12 +64,41 @@ jobs:
           BACKEND_ORIGIN: ${{ secrets.BACKEND_ORIGIN }}
           BACKEND_AUTH: ${{ secrets.BACKEND_AUTH }}
         run: |
-          # verbose to show more context if something fails
-          # prefer passing account id explicitly to wrangler to avoid account lookup issues
           if [ -n "$CF_ACCOUNT_ID" ]; then
             wrangler publish --dry-run --verbose --account-id "$CF_ACCOUNT_ID" || true
-          else
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         else
             echo "CF_ACCOUNT_ID not set; running without explicit account-id"
             wrangler publish --dry-run --verbose || true
-          fi
+      
+
+
+    fi
 
