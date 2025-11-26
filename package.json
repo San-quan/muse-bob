@@ -4,6 +4,11 @@
   "type": "module",
   "description": "Reorganized Cloudflare Worker project",
   "scripts": {
-    "check": "node --check _worker.js || true"
+    "check": "node --check _worker.js || true",
+    "test": "jest --runInBand",
+    "audit": "npm audit --audit-level=high || true"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
