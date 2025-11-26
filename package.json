@@ -4,6 +4,12 @@
   "type": "module",
   "description": "Reorganized Cloudflare Worker project",
   "scripts": {
-    "check": "node --check _worker.js || true"
+    "check": "node --check _worker.js || true",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --runInBand",
+    "audit": "npm audit --audit-level=high || true",
+    "lint": "echo 'No linter configured yet' && exit 0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
